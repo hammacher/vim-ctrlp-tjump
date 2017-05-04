@@ -44,7 +44,8 @@ function! ctrlp#tjump#exec(mode, ...)
     en
   endif
 
-  let s:taglist = taglist('^'.s:word.'$')
+  let s:tagpattern = '^'.s:word.'$'
+  let s:taglist = taglist(s:tagpattern)
   let s:bname = fnamemodify(bufname('%'), ':p')
 
   if len(s:taglist) == 0
@@ -132,13 +133,13 @@ function! s:open_tag(str, mode)
   set nocst
   let idx = split(a:str, '\t')[0]
   if a:mode == 'e'
-    exec ":silent! ".idx."tag ".s:word
+    exec ":silent! ".idx."tag /".s:tagpattern
   elseif a:mode == 't'
-    exec ":silent! tab ".idx."tag ".s:word
+    exec ":silent! tab ".idx."tag /".s:tagpattern
   elseif a:mode == 'v'
-    exec ":silent! vertical ".idx."stag ".s:word
+    exec ":silent! vertical ".idx."stag /".s:tagpattern
   elseif a:mode == 'h'
-    exec ":silent! ".idx."stag ".s:word
+    exec ":silent! ".idx."stag /".s:tagpattern
   end
   let &cst = cstopt
 endfunction
